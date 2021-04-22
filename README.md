@@ -1,7 +1,8 @@
 <!-- ABOUT THE PROJECT -->
 ## Youtube Chat Translator
 
-[![Chat Translator][product-screenshot]](./images/1.png)
+![Example Image](./images/1.png)
+
 
 This is a tool used to translate the chat of Youtube Livestreams. This tool uses a local flask server to continually fetch Youtube Chat metadata, and then takes the data and outputs it onto a webpage. 
 
