@@ -1,0 +1,138 @@
+<!doctype html>
+<title>Server Send Events Demo</title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css" media="screen"/>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script>
+var MAX_MESSAGES = 15;
+var MAX_SUPER = 3;
+var display_time = true;
+var display_author = true;
+var urlParams = new URLSearchParams(window.location.search);
+
+// Chat event
+if (!!window.EventSource) {
+  link = urlParams.get("link")
+  let source = new EventSource('/test?link=' + link);
+  let counter = 0;
+  let supercounter = 0;
+
+  source.onmessage = function(e) {
+    let meta = JSON.parse(e.data);
+
+    if (meta.isSuper) {
+      let ele = document.getElementById('superdata');  
+      let newDiv = document.createElement("div"); 
+      newDiv.setAttribute = "superchat";
+      newDiv.innerHTML = getSuperChat(meta); 
+      ele.appendChild(newDiv);
+      supercounter += 1;
+    } else {
+      let ele = document.getElementById('data');  
+      let newDiv = document.createElement("div"); 
+      newDiv.setAttribute = "chat";
+      newDiv.innerHTML = getChat(meta); 
+      ele.appendChild(newDiv);
+      counter += 1;
+    }
+
+    while (counter > MAX_MESSAGES) {
+      $('#data').find('div').first().remove();
+      counter -= 1;
+    } 
+    while (supercounter > MAX_SUPER) {
+      $('#superdata').find('div').first().remove();
+      supercounter -= 1;
+    } 
+
+  }
+}
+
+function changeValue() {
+  // Change number of displayed messages
+  let input = document.getElementById('messages').value
+  if (input >= 10 && input <= 100) MAX_MESSAGES = input;
+}
+
+function changeSuper() {
+  // Change number of displayed superchats
+  let input = document.getElementById('super_messages').value
+  if (input >= 0 && input <= 10) MAX_SUPER = input;
+}
+
+function toColor(num) {
+  // Converts integer into rgba format
+  num >>>= 0;
+  var b = num & 0xFF,
+      g = (num & 0xFF00) >>> 8,
+      r = (num & 0xFF0000) >>> 16,
+      a = ( (num & 0xFF000000) >>> 24 ) / 255 ;
+  return "rgba(" + [r, g, b, a].join(",") + ")";
+}
+
+function getChat(meta) {
+  // Given data, returns string containing info to be displayed
+  let time = $('#display_time').is(":checked") ? meta.time : "";
+  let author = "[" + meta.author + "]";
+  if (meta.isMember) {
+    author = "<span style='color:green;'>[" + meta.author + "]</span>";
+  }
+  author = $('#display_author').is(":checked") ? author : "";
+  let message = "{" + meta.message + "}";
+  let str_build = time + " " + author + " " + message + " ";
+  return str_build;
+}
+
+function getSuperChat(meta) {
+  // Given data, returns string containing superchat info
+  let time = $('#display_time').is(":checked") ? meta.time : "";
+  let author = "[" + meta.author + "]";
+  if (meta.isMember) {
+    author = "<span style='color:green;'>[" + meta.author + "]</span>";
+  }
+  author = $('#display_author').is(":checked") ? author : "";
+  let message = "{" + meta.message + "}";
+  let str_build = "<div style='background-color: " + toColor(meta.color) + " ; padding: 10px;'>" + time + author  + message + "</div>";
+  console.log(str_build);
+  return str_build;
+}
+
+</script>
+
+<div id="Title">Chat <img src='https://yt3.ggpht.com/lcuAO4tgAWUd7ZKhyTrXnjhDlRWt42KisrY1OlPai1qS2GvVNU80mH0C1ksaOOs2o8NlSqA-_g=w48-h48-c-k-nd' alt='example emote' width="32" height="32"></div>
+
+<label class="container">display_time
+  <input type="checkbox" checked="checked" id="display_time">
+  <span class="checkmark"></span>
+</label>
+<br>
+<label class="container">display_author
+  <input type="checkbox" checked="checked" id="display_author">
+  <span class="checkmark"></span>
+</label>
+<br>
+<label>Number of messages (10-100):</label>
+<input type="number" id="messages" min="10" max="100">
+<button id="msg_button" onclick="changeValue();">Submit</button>
+<br>
+<label>Number of superchats (0-10):</label>
+<input type="number" id="super_messages" min="10" max="100">
+<button id="msg_button" onclick="changeSuper();">Submit</button>
+
+<hr>
+
+<div id="superdata" class="superchat"></div>
+<hr>
+<div id="data" class="chat"></div>
+<hr>
+
+
+
+
+
+
+
+
+
+
+
+
