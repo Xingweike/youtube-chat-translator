@@ -41,3 +41,9 @@ To run the server locally and start translating some chat messages, follow these
 3. Insert a Youtube Stream link
 
 4. Enjoy!
+
+## Example Images
+
+![Original Chat](./images/3.png)
+
+![Translated Chat](./images/2.png)
