@@ -81,9 +81,7 @@ def translate(c):
         elif isinstance(item, str): 
             # regular message (translate)
             # currently translating regular emojis
-            print(item)
             translated = translator.translate(item, lang_tgt='en')
-            print(translated + '\n')
             msg_lst.append(translated)
         else:
             # ignore

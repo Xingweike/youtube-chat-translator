@@ -38,6 +38,6 @@ To run the server locally and start translating some chat messages, follow these
   ```
 2. Open your browser and navigate to 127.0.0.1:5000/form
    
-3. Insert a Youtube Stream link, e.g. https://www.youtube.com/watch?v=T5WDu_Vp6t0
+3. Insert a Youtube Stream link
 
 4. Enjoy!
