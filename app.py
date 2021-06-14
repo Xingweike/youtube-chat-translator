@@ -13,7 +13,7 @@ import json
 app = Flask(__name__)
 
 # Input Stream Link
-@app.route('/form', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def form_example():
     """
     Displays a form where the user inputs a Youtube Stream Link
